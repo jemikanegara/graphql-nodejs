@@ -11,7 +11,7 @@ const add = (num1, num2) => {
 };
 
 const subtracts = (num1, num2) => {
-  return num1 + num2;
+  return num1 - num2;
 };
 
 export { add as default, subtracts };
