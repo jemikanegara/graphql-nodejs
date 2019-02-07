@@ -2,21 +2,16 @@ import { GraphQLServer } from "graphql-yoga";
 
 // Scalar : String, Boolean, Int, Float, ID
 
-// Create query definition and resolver for each
-// title - string product name
-// price - number as float
-// releaseYear - number as int (optional)
-// rating - number as float (optional)
-// inStock - boolean
+// 1. Create a Post type
+// 2. Add id, title, body, and published to the Post Type
+// 3. Define a "post" query that returns a single post
+// 4. Set up the resolver method to return some post data
+// 5. Test out the query
 
 // Schema // GPA OKAY TO NULL BECAUSE IT CAN BE NOT IN SCHOOL
 const typeDefs = `
     type Query {
-        id : ID!
-        name : String!
-        age : Int!
-        employed : Boolean!
-        gpa : Float
+        product : Product!
     },
     type Product {
         title : String!
@@ -30,20 +25,8 @@ const typeDefs = `
 // Resolver
 const resolvers = {
   Query: {
-    id() {
-      return "abc123";
-    },
-    name() {
-      return "Jarwo";
-    },
-    age() {
-      return 23;
-    },
-    employed() {
-      return true;
-    },
-    gpa() {
-      return null;
+    product() {
+      return resolvers.Product;
     }
   },
   Product: {
