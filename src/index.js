@@ -2,9 +2,36 @@ import { GraphQLServer } from "graphql-yoga";
 
 // Scalar : String, Boolean, Int, Float, ID
 
-// 1. Create an "add" query that returns a float
-// 2. Set up "add" to take a two arguments (a ,b ) which are required floats.
-// 3. Have the resolver send back the sum of the two arguments
+// 1. Set up an array of three posts with dummy post data (id, title, body, published)
+
+const posts = [
+  {
+    id: "1",
+    title: "Learn GraphQL",
+    body: "Dont forget the syntax",
+    published: false
+  },
+  {
+    id: "2",
+    title: "Learn Vue",
+    body: "Vue is new framework",
+    published: true
+  },
+  {
+    id: 3,
+    title: "Whats Next?",
+    body: "I dont know what to do next",
+    published: true
+  }
+];
+
+// 2. Set up a "posts" query and resolver that returns all the posts
+
+// 3. Test the query out
+
+// 4. Add a "query" argument that only returns posts that contain the query string in the title or body
+
+// 5. Run a few sample queries searching for posts with specific title
 
 // DEMO USER DATA
 const users = [
@@ -32,7 +59,7 @@ const typeDefs = `
     type Query {
         users(query : String) : [User!]!
         greeting(name : String ): String!
-        post : Post!
+        post(query : String) : [Post!]!
     },
     type User {
       id : ID!
@@ -72,13 +99,17 @@ const resolvers = {
         );
       });
     },
-    post() {
-      return {
-        id: "abc123",
-        title: "Title",
-        body: "Hellow world, welcome to graph",
-        published: true
-      };
+    post(parent, args, ctx, info) {
+      if (!args.query) {
+        return posts;
+      }
+
+      return posts.filter(post => {
+        return (
+          post.title.toLowerCase().includes(args.query.toLowerCase()) ||
+          post.body.toLowerCase().includes(args.query.toLowerCase())
+        );
+      });
     },
     greeting(parents, args, ctx, info) {
       console.log("PARENTS =============");
