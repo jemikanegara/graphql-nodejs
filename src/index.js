@@ -1,9 +1,38 @@
-import abc, { message, greet } from "./myModule";
-import addFunc, { subtracts } from "./math";
+import { GraphQLServer } from "graphql-yoga";
 
-// console.log(message);
-// console.log(abc);
-// console.log(greet("Jarwo"));
+// Schema
+const typeDefs = `
+    type Query {
+        hello : String!
+        name : String!
+        bio : String!
+        location : String!
+    }
+`;
 
-console.log(addFunc(1, 5)); // add function
-console.log(subtracts(10, 2)); // subtracts function
+// Resolver
+const resolvers = {
+  Query: {
+    hello() {
+      return "My first query";
+    },
+    name() {
+      return "Jarwo";
+    },
+    location() {
+      return "Banyuwangi";
+    },
+    bio() {
+      return "biology";
+    }
+  }
+};
+
+const server = new GraphQLServer({
+  typeDefs: typeDefs,
+  resolvers: resolvers
+});
+
+server.start(() => {
+  console.log("server running at port 4000");
+});
