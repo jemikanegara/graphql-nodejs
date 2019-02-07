@@ -2,16 +2,15 @@ import { GraphQLServer } from "graphql-yoga";
 
 // Scalar : String, Boolean, Int, Float, ID
 
-// 1. Create a Post type
-// 2. Add id, title, body, and published to the Post Type
-// 3. Define a "post" query that returns a single post
-// 4. Set up the resolver method to return some post data
-// 5. Test out the query
+// 1. Create an "add" query that returns a float
+// 2. Set up "add" to take a two arguments (a ,b ) which are required floats.
+// 3. Have the resolver send back the sum of the two arguments
 
 // Schema // GPA OKAY TO NULL BECAUSE IT CAN BE NOT IN SCHOOL
 const typeDefs = `
     type Query {
         greeting(name : String ): String!
+        add(a : Float!, b : Float!) : Float!
         post : Post!
     },
     type Product {
@@ -32,6 +31,13 @@ const typeDefs = `
 // Resolver
 const resolvers = {
   Query: {
+    add(parents, args, ctx, info) {
+      if (args.a && args.b) {
+        return args.a + args.b;
+      } else {
+        return null;
+      }
+    },
     post() {
       return {
         id: "abc123",
