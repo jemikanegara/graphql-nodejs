@@ -11,6 +11,7 @@ import { GraphQLServer } from "graphql-yoga";
 // Schema // GPA OKAY TO NULL BECAUSE IT CAN BE NOT IN SCHOOL
 const typeDefs = `
     type Query {
+        greeting(name : String ): String!
         post : Post!
     },
     type Product {
@@ -38,6 +39,22 @@ const resolvers = {
         body: "Hellow world, welcome to graph",
         published: true
       };
+    },
+    greeting(parents, args, ctx, info) {
+      console.log("PARENTS =============");
+      console.log(parents);
+      console.log("ARGS ================");
+      console.log(args);
+      console.log("CTX ====================");
+      console.log(ctx);
+      console.log("INFO ================");
+      console.log(info);
+
+      if (args.name) {
+        return `Hello ${args.name}`;
+      } else {
+        return ` Just Hello`;
+      }
     }
   },
   Product: {
