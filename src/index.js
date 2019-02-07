@@ -6,13 +6,41 @@ import { GraphQLServer } from "graphql-yoga";
 // 2. Set up "add" to take a two arguments (a ,b ) which are required floats.
 // 3. Have the resolver send back the sum of the two arguments
 
+// DEMO USER DATA
+const users = [
+  {
+    id: "1",
+    name: "Jem",
+    email: "jem@jem.com"
+  },
+  {
+    id: "2",
+    name: "Rocky",
+    email: "rocky@bottom.com",
+    age: 23
+  },
+  {
+    id: "3",
+    name: "Bully",
+    email: "bully@bull.com",
+    age: 90
+  }
+];
+
 // Schema // GPA OKAY TO NULL BECAUSE IT CAN BE NOT IN SCHOOL
 const typeDefs = `
     type Query {
+        users(query : String) : [User!]!
         greeting(name : String ): String!
-        add(numbers : [Float!]) : Float!
         post : Post!
     },
+    type User {
+      id : ID!
+      name : String!
+      email : String!
+      age : Int
+    }
+    ,
     type Product {
         title : String!
         price : Float!
@@ -31,13 +59,17 @@ const typeDefs = `
 // Resolver
 const resolvers = {
   Query: {
-    add(parents, args, ctx, info) {
-      if (args.numbers.length === 0) {
-        return 0;
+    users(parent, args, ctx, info) {
+      if (!args.query) {
+        return users;
       }
 
-      return args.numbers.reduce((accumulator, currentValue) => {
-        return accumulator + currentValue;
+      return users.filter(user => {
+        return (
+          user.name.toLowerCase().includes(args.query.toLowerCase()) ||
+          user.email.toLowerCase().includes(args.query.toLowerCase()) ||
+          user.id.toLowerCase().includes(args.query.toLowerCase())
+        );
       });
     },
     post() {
