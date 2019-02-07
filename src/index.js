@@ -10,7 +10,7 @@ import { GraphQLServer } from "graphql-yoga";
 const typeDefs = `
     type Query {
         greeting(name : String ): String!
-        add(a : Float!, b : Float!) : Float!
+        add(numbers : [Float!]) : Float!
         post : Post!
     },
     type Product {
@@ -32,11 +32,13 @@ const typeDefs = `
 const resolvers = {
   Query: {
     add(parents, args, ctx, info) {
-      if (args.a && args.b) {
-        return args.a + args.b;
-      } else {
-        return null;
+      if (args.numbers.length === 0) {
+        return 0;
       }
+
+      return args.numbers.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue;
+      });
     },
     post() {
       return {
