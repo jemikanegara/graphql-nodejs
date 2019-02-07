@@ -1,29 +1,66 @@
 import { GraphQLServer } from "graphql-yoga";
 
-// Schema
+// Scalar : String, Boolean, Int, Float, ID
+
+// Create query definition and resolver for each
+// title - string product name
+// price - number as float
+// releaseYear - number as int (optional)
+// rating - number as float (optional)
+// inStock - boolean
+
+// Schema // GPA OKAY TO NULL BECAUSE IT CAN BE NOT IN SCHOOL
 const typeDefs = `
     type Query {
-        hello : String!
+        id : ID!
         name : String!
-        bio : String!
-        location : String!
+        age : Int!
+        employed : Boolean!
+        gpa : Float
+    },
+    type Product {
+        title : String!
+        price : Float!
+        releaseYear : Int
+        rating : Float
+        inStock : Boolean!
     }
 `;
 
 // Resolver
 const resolvers = {
   Query: {
-    hello() {
-      return "My first query";
+    id() {
+      return "abc123";
     },
     name() {
       return "Jarwo";
     },
-    location() {
-      return "Banyuwangi";
+    age() {
+      return 23;
     },
-    bio() {
-      return "biology";
+    employed() {
+      return true;
+    },
+    gpa() {
+      return null;
+    }
+  },
+  Product: {
+    title() {
+      return "Baju anak";
+    },
+    price() {
+      return 1000.23;
+    },
+    releaseYear() {
+      return null;
+    },
+    rating() {
+      return null;
+    },
+    inStock() {
+      return true;
     }
   }
 };
