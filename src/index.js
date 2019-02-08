@@ -9,19 +9,22 @@ const posts = [
     id: "1",
     title: "Learn GraphQL",
     body: "Dont forget the syntax",
-    published: false
+    published: false,
+    author: "1"
   },
   {
     id: "2",
     title: "Learn Vue",
     body: "Vue is new framework",
-    published: true
+    published: true,
+    author: "2"
   },
   {
     id: 3,
     title: "Whats Next?",
     body: "I dont know what to do next",
-    published: true
+    published: true,
+    author: "1"
   }
 ];
 
@@ -80,6 +83,7 @@ const typeDefs = `
         title : String!
         body : String!
         published : Boolean!
+        author : User!
     }
 `;
 
@@ -111,6 +115,7 @@ const resolvers = {
         );
       });
     },
+
     greeting(parents, args, ctx, info) {
       console.log("PARENTS =============");
       console.log(parents);
@@ -126,6 +131,11 @@ const resolvers = {
       } else {
         return ` Just Hello`;
       }
+    }
+  },
+  Post: {
+    author(parent, args, ctx, info) {
+      return users.find(user => user.id === parent.author);
     }
   },
   Product: {
